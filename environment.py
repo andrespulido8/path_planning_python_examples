@@ -1,12 +1,16 @@
 """Defines the workspace to do a path planning comparison."""
 import numpy as np
 import matplotlib.pyplot as plt
-from plot_environment import plot_environment, plot_path, plot_graph
+from plot_environment import plot_environment, plot_path, plot_graph, plot_field
 
 from dijkstra import dijkstra
 from exact_cell_decomposition import exact_cell_decomposition
+from potential_field import potential_field
+
 
 def main(): 
+    algorithm = "potential_field"
+
     p0 = (1, 1)
     pf = (9, 4)
 
@@ -20,14 +24,21 @@ def main():
     B2 = ((7, 2), (7, 4), (8, 2))
     obstacles = (B1, B2)
 
-    graph = exact_cell_decomposition(p0, pf, obstacles, limits)
-    distance, path = dijkstra(graph, p0, pf)
-    print(f"Shortest distance from {p0} to {pf} is: {distance[pf]}")
-    print(f"and the path to get to pf is: {path[pf] + [pf]}")
+    if algorithm == "potential_field":
+        force_field, path = potential_field(p0, pf, obstacles)
+    elif algorithm == "exact_cell_decomposition":
+        graph = exact_cell_decomposition(p0, pf, obstacles, limits)
+        distance, path = dijkstra(graph, p0, pf)
+        print(f"Shortest distance from {p0} to {pf} is: {distance[pf]}")
+        print(f"and the path to get to pf is: {path[pf] + [pf]}")
 
     fig, ax = plt.subplots()
-    ax = plot_graph(ax, graph)
-    ax = plot_path(ax, [node for node in path[pf] + [pf]], p0, pf)
+    if algorithm == "exact_cell_decomposition":
+        ax = plot_graph(ax, graph)
+        ax = plot_path(ax, [node for node in path[pf] + [pf]], p0, pf)
+    elif algorithm == "potential_field":
+        ax = plot_path(ax, path, p0, pf)
+        ax = plot_field(ax, force_field, limits)
     ax = plot_environment(ax, p0, pf, obstacles, boundary)
     plt.show()
 

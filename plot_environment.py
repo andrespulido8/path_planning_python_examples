@@ -29,3 +29,23 @@ def plot_graph(ax, graph):
         for other_vertex in graph[vertex]:
             ax.plot([vertex[0], other_vertex[0]], [vertex[1], other_vertex[1]], 'k', alpha=0.05)
     return ax
+
+
+def plot_field(ax, f, limits):
+    """Plots the potential field
+    f: function that returns the force vector at a given point"""
+    x = np.linspace(limits[0][0], limits[2][0], 20)
+    y = np.linspace(limits[0][1], limits[1][1], 20)
+    print("x: and y: ", x, y)
+    X, Y = np.meshgrid(x, y)
+    U = np.zeros_like(X)
+    V = np.zeros_like(Y)
+    for i in range(len(x)):
+        for j in range(len(y)):
+            force = - np.sum(f((x[i], y[j])), axis=0) 
+            force = force / np.linalg.norm(force)
+            U[j, i] = force[0] 
+            V[j, i] = force[1]
+    ax.quiver(X, Y, U, V, color="C0", alpha=0.5, scale=10, scale_units="inches") 
+    print("Force field plotted. Close the plot to continue. ")
+    return ax
