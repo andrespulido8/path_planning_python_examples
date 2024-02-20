@@ -1,6 +1,6 @@
 import numpy as np
 
-from exact_cell_decomposition import is_line_intersecting
+from visibility_graph import is_line_intersecting
 
 def PRM(p0, pf, obstacles, limits):
     """ Probabilistic Roadmap Method

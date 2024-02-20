@@ -54,3 +54,14 @@ def plot_field(ax, f, limits):
     ax.quiver(X, Y, U, V, color="C0", alpha=0.5, scale=10, scale_units="inches", label="Force field") 
     print("Force field plotted. Close the plot to continue. ")
     return ax
+
+def plot_decomposition(ax, decomposition):
+    for polygon in decomposition[:-1]:
+        # find all the vertex of the polygon that has the highest y value with sorting
+        vertex_arr = sorted(polygon, key=lambda x: x[1], reverse=True)
+        # all vertices with the max y value
+        max_y = [vertex for vertex in vertex_arr if vertex[1] == vertex_arr[0][1]]
+        # plot a line between the all the vertices with the max y value
+        for i in range(len(max_y) - 1):
+            ax.plot([max_y[i][0], max_y[i + 1][0]], [max_y[i][1], max_y[i + 1][1]], 'k')
+    return ax
