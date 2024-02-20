@@ -45,6 +45,9 @@ def is_line_intersecting(p1, p2, obstacles):
     Returns:
         bool: True if the line intersects an obstacle, False otherwise.
     """
+    def ccw(A, B, C):
+        return (C[1]-A[1]) * (B[0]-A[0]) > (B[1]-A[1]) * (C[0]-A[0])
+    
     for obstacle in obstacles:
         for i in range(len(obstacle)):
             p3 = obstacle[i]
@@ -52,20 +55,6 @@ def is_line_intersecting(p1, p2, obstacles):
             if p1 == p3 or p1 == p4 or p2 == p3 or p2 == p4:
                 continue
             else:
-                if do_lines_intersect(p1, p2, p3, p4):
+                if ccw(p1, p3, p4) != ccw(p2, p3, p4) and ccw(p1, p2, p3) != ccw(p1, p2, p4):
                     return True
     return False
-
-
-def do_lines_intersect(p1, p2, p3, p4):
-    """ 
-    Checks if two line segments intersect.
-    Returns True if they intersect, False otherwise.
-    """
-    def ccw(A, B, C):
-        return (C[1]-A[1]) * (B[0]-A[0]) > (B[1]-A[1]) * (C[0]-A[0])
-    
-    def intersect(A, B, C, D):
-        return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B, C) != ccw(A, B, D)
-
-    return intersect(p1, p2, p3, p4)

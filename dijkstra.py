@@ -31,6 +31,7 @@ def dijkstra(graph, start, end):
 
         # If the current node is the end node, return the distance and path.
         if current == end:
+            print("Path found with Dijkstra's")
             return distance, path
 
         # Loop over the neighbors of the current node.
@@ -42,6 +43,8 @@ def dijkstra(graph, start, end):
             if new_distance < distance[neighbor]:
                 distance[neighbor] = new_distance
                 path[neighbor] = path[current] + [current]
+    print("No path found in graph :(")
+
 
 
 def main():

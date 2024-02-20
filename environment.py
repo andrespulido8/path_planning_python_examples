@@ -6,10 +6,11 @@ from plot_environment import plot_environment, plot_path, plot_graph, plot_field
 from dijkstra import dijkstra
 from exact_cell_decomposition import exact_cell_decomposition
 from potential_field import potential_field
+from prm import PRM
 
 
 def main(): 
-    algorithm = "potential_field"
+    algorithm = "PRM"
 
     p0 = (1, 1)
     pf = (9, 4)
@@ -31,15 +32,18 @@ def main():
         distance, path = dijkstra(graph, p0, pf)
         print(f"Shortest distance from {p0} to {pf} is: {distance[pf]}")
         print(f"and the path to get to pf is: {path[pf] + [pf]}")
+    elif algorithm == "PRM":
+        graph = PRM(p0, pf, obstacles, limits)
+        distance, path = dijkstra(graph, p0, pf)
 
     fig, ax = plt.subplots()
-    if algorithm == "exact_cell_decomposition":
+    if algorithm == "exact_cell_decomposition" or algorithm == "PRM":
         ax = plot_graph(ax, graph)
-        ax = plot_path(ax, [node for node in path[pf] + [pf]], p0, pf)
+        ax = plot_path(ax, [node for node in path[pf] + [pf]])
     elif algorithm == "potential_field":
-        ax = plot_path(ax, path, p0, pf)
+        ax = plot_path(ax, path)
         ax = plot_field(ax, force_field, limits)
-    ax = plot_environment(ax, p0, pf, obstacles, boundary)
+    ax = plot_environment(ax, p0, pf, obstacles, boundary, algorithm)
     plt.show()
 
 if __name__ == "__main__":
