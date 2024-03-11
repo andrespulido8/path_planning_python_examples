@@ -11,7 +11,7 @@ from prm import PRM
 
 
 def main(): 
-    algorithm = "PRM"
+    algorithm = "exact_cell_decomposition"
 
     p0 = (1, 1)
     pf = (9, 4)
@@ -39,6 +39,8 @@ def main():
     elif algorithm == "visibility_graph":
         graph = visibility_graph(p0, pf, obstacles, limits)
         distance, path = dijkstra(graph, p0, pf)
+        print(f"Shortest distance from {p0} to {pf} is: {distance[pf]}")
+        print(f"and the path to get to pf is: {path[pf] + [pf]}")
 
     fig, ax = plt.subplots()
     if algorithm == "PRM" or algorithm == "visibility_graph":
@@ -50,7 +52,6 @@ def main():
     elif algorithm == "exact_cell_decomposition":
         ax = plot_path(ax, [node for node in path[pf] + [pf]])
         ax = plot_decomposition(ax, decomposition)
-    print("boundary: ", boundary)
     ax = plot_environment(ax, p0, pf, obstacles, boundary, algorithm)
     plt.show()
 
