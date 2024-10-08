@@ -1,5 +1,5 @@
 # Path Planning Examples 
-Path planniing algorithms to get a "robot" from one point to another while avoiding collisions. 
+Path planniing algorithms to get a "robot" from one point to another while avoiding collisions. (and an example notebook on using a particle filter on images)
 
 ### Visibility graphs
 ![](images/visibility_graph.png "")
